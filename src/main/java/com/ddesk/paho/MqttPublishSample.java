@@ -1,5 +1,6 @@
 package com.ddesk.paho;
- import org.eclipse.paho.client.mqttv3.MqttClient;
+ import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -9,11 +10,11 @@ public class MqttPublishSample {
 
         public static void main(String[] args) {
 
-            String topic        = "MQTT Examples";
-            String content      = "Message from MqttPublishSample";
+            String topic        = "game/#";
+            String content      = "game/1.160089909";
             int qos             = 0;
             String broker       = "wss://mqtt.dollarexch99.com:443";
-            String clientId     = "14919_";
+            String clientId     = "14919_11963221512314";
             MemoryPersistence persistence = new MemoryPersistence();
 
 
@@ -21,6 +22,8 @@ public class MqttPublishSample {
                 MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
                 MqttConnectOptions connOpts = new MqttConnectOptions();
                 connOpts.setCleanSession(true);
+                connOpts.setUserName("mqttusersub");
+                connOpts.setPassword("M1iVhkb1Y0v".toCharArray());
                 System.out.println("Connecting to broker: "+broker);
                 sampleClient.connect(connOpts);
                 System.out.println("Connected");
@@ -29,9 +32,16 @@ public class MqttPublishSample {
                 message.setQos(qos);
                 sampleClient.publish(topic, message);
                 System.out.println("Message published");
-                sampleClient.disconnect();
-                System.out.println("Disconnected");
-                System.exit(0);
+                sampleClient.subscribe(topic, new IMqttMessageListener() {
+					
+					public void messageArrived(String topic, MqttMessage message) throws Exception {
+						System.out.println(message.toString());
+						
+					}
+				});
+             //   sampleClient.disconnect();
+             //   System.out.println("Disconnected");
+            //    System.exit(0);
             } catch(MqttException me) {
                 System.out.println("reason "+me.getReasonCode());
                 System.out.println("msg "+me.getMessage());
