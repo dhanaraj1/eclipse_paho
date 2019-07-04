@@ -10,8 +10,8 @@ public class MqttPublishSample {
 
         public static void main(String[] args) {
 
-            String topic        = "game/#";
-            String content      = "game/1.160089909";
+            String topic        = "game/1.159363295";
+            String content      = "game/1.159363295";
             int qos             = 0;
             String broker       = "wss://mqtt.dollarexch99.com:443";
             String clientId     = "14919_11963221512314";
@@ -28,10 +28,10 @@ public class MqttPublishSample {
                 sampleClient.connect(connOpts);
                 System.out.println("Connected");
                 System.out.println("Publishing message: "+content);
-                MqttMessage message = new MqttMessage(content.getBytes());
+                /*MqttMessage message = new MqttMessage(content.getBytes());
                 message.setQos(qos);
                 sampleClient.publish(topic, message);
-                System.out.println("Message published");
+                System.out.println("Message published");*/
                 sampleClient.subscribe(topic, new IMqttMessageListener() {
 					
 					public void messageArrived(String topic, MqttMessage message) throws Exception {
